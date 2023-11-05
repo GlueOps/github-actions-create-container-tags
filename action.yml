@@ -7,9 +7,6 @@ branding:
 
 
 
-name: 'Create GlueOps Image Tags'
-description: 'Creates tags for docker images used by the GlueOps platform'
-
 outputs:
   tags_csv:
     description: 'Comma-separated list of GlueOps image tags'
