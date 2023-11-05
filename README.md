@@ -23,6 +23,6 @@ Can be implemented as a stand alone action, or coupled with the action [GlueOps/
 ```yaml
 - name: Create GlueOps Tags
     if: inputs.tags == ''
-    uses: Glueops/github-actions-create-container-tags@v0.1.0
+    uses: Glueops/github-actions-create-container-tags@v0.1.1
     id: create-tags
 ```
