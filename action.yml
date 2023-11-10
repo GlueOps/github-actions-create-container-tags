@@ -29,9 +29,12 @@ runs:
         if [[ $GITHUB_REF == refs/heads/* ]]; then
           REF_TYPE=branch
           TARGET_REF=${GITHUB_REF#refs/heads/}
-        elif [[ $GITHUB_REF == refs/tags/* ]]; then
+        elif [[ $GITHUB_REF == refs/tags/* ]] || [[ -n "${{ github.event.release.tag_name }}" ]]; then
           REF_TYPE=tag
-          TARGET_REF=${GITHUB_REF#refs/tags/}
+          TARGET_REF=${{ github.event.release.tag_name }}
+          if [ -z "$TARGET_REF" ]; then
+              TARGET_REF=${GITHUB_REF#refs/tags/}
+          fi
         elif [[ $GITHUB_REF == refs/pull/* ]]; then
           REF_TYPE=pull_request
           TARGET_REF=$GITHUB_SHA
@@ -46,8 +49,6 @@ runs:
         SHORT_SHA="${SHA:0:7}"
 
         # Remove invalid tag characters from TARGET_REF
-        TARGET_REF="${TARGET_REF#refs/tags/}" 
-        TARGET_REF="${TARGET_REF#refs/heads/}"
         TARGET_REF=${TARGET_REF////-}      # Replace slashes with hyphens
         TARGET_REF=${TARGET_REF//[^a-zA-Z0-9_.-]/_}   # Replace invalid characters with underscores
         TARGET_REF=${TARGET_REF// /_}      # Replace whitespaces with underscores
